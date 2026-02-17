@@ -20,10 +20,10 @@
 ![Home View](screenshot/1.png)
 
 ### Full Week View
-![Full Week](screenshot/2.png)
+![Full Week](screenshot/3.png)
 
 ### Full Calendar View
-![Full Calendar](screenshot/3.png)
+![Full Calendar](screenshot/2.png)
 
 ---
 
