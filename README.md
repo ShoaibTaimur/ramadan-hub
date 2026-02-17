@@ -17,24 +17,27 @@
 ## 📸 Screenshots
 
 ### Home — Today's Schedule
-![Home View](https://raw.githubusercontent.com/ShoaibTaimur/ramadan-hub/main/.github/screenshots/home.png)
+![Home View](screenshot/1.png)
+
+### Full Week View
+![Full Week](screenshot/2.png)
 
 ### Full Calendar View
-![Full Calendar](https://raw.githubusercontent.com/ShoaibTaimur/ramadan-hub/main/.github/screenshots/full-calendar.png)
+![Full Calendar](screenshot/3.png)
 
 ---
 
 ## ✨ Features
 
-- 🕌 **Division-wise Schedules** — Accurate Sehri, Fajr & Iftar times for all 8 divisions of Bangladesh (Dhaka, Chattogram, Rajshahi, Khulna, Barishal, Sylhet, Rangpur, Mymensingh)
-- 📅 **Three Views** — Today, This Week, and Full 30-day Ramadan calendar
-- ⏱️ **Live Countdown Timer** — Real-time countdown to the next Sehri or Iftar
-- 🔔 **Push Notifications** — Get reminded before Sehri & Iftar automatically
-- 📱 **Installable PWA** — Install as a native app on Android, iOS, and desktop
-- 🌙 **Dark & Light Mode** — Beautiful Islamic-themed UI with toggle support
-- 🎨 **Islamic Decorations** — Crescent, stars, and ornamental design elements
-- ⚡ **Offline Support** — Works without internet once installed
-- 🇧🇩 **Bengali Interface** — Fully localized in Bangla
+-  **Division-wise Schedules** — Accurate Sehri, Fajr & Iftar times for all 8 divisions of Bangladesh (Dhaka, Chattogram, Rajshahi, Khulna, Barishal, Sylhet, Rangpur, Mymensingh)
+-  **Three Views** — Today, This Week, and Full 30-day Ramadan calendar
+-  **Live Countdown Timer** — Real-time countdown to the next Sehri or Iftar
+-  **Push Notifications** — Get reminded before Sehri & Iftar automatically
+-  **Installable PWA** — Install as a native app on Android, iOS, and desktop
+-  **Dark & Light Mode** — Beautiful Islamic-themed UI with toggle support
+-  **Islamic Decorations** — Crescent, stars, and ornamental design elements
+-  **Offline Support** — Works without internet once installed
+-  **Bengali Interface** — Fully localized in Bangla
 
 ---
 
