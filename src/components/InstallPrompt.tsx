@@ -1,32 +1,40 @@
-import { useState, useEffect } from "react";
-import { Download, X, Smartphone } from "lucide-react";
+import { Download, Smartphone, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
+type NavigatorWithStandalone = Navigator & { standalone?: boolean };
+type WindowWithMSStream = Window & { MSStream?: unknown };
+
 const InstallPrompt = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
+    const nav = navigator as NavigatorWithStandalone;
+    const win = window as WindowWithMSStream;
+
     // Check if already installed / standalone
     const standalone =
       window.matchMedia("(display-mode: standalone)").matches ||
-      (navigator as any).standalone === true;
+      nav.standalone === true;
     setIsStandalone(standalone);
     if (standalone) return;
 
     // Check if dismissed recently
     const dismissed = localStorage.getItem("install-dismissed");
-    if (dismissed && Date.now() - Number(dismissed) < 3 * 24 * 60 * 60 * 1000) return;
+    if (dismissed && Date.now() - Number(dismissed) < 3 * 24 * 60 * 60 * 1000)
+      return;
 
     // Detect iOS
     const ua = navigator.userAgent;
-    const isiOS = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
+    const isiOS = /iPad|iPhone|iPod/.test(ua) && !win.MSStream;
     setIsIOS(isiOS);
 
     if (isiOS) {
@@ -82,7 +90,16 @@ const InstallPrompt = () => {
             </h4>
             {isIOS ? (
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Safari-এ <span className="inline-flex items-center"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316a34a' stroke-width='2'%3E%3Cpath d='M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13'/%3E%3C/svg%3E" alt="share" className="w-4 h-4 mx-0.5" /></span> Share বাটনে ট্যাপ করে <strong>"Add to Home Screen"</strong> সিলেক্ট করুন
+                Safari-এ{" "}
+                <span className="inline-flex items-center">
+                  <img
+                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316a34a' stroke-width='2'%3E%3Cpath d='M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13'/%3E%3C/svg%3E"
+                    alt="share"
+                    className="w-4 h-4 mx-0.5"
+                  />
+                </span>{" "}
+                Share বাটনে ট্যাপ করে <strong>"Add to Home Screen"</strong>{" "}
+                সিলেক্ট করুন
               </p>
             ) : (
               <>

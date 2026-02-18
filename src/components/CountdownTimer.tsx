@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { parseDate, type DayEntry } from "@/data/siteData";
+import { numberToBengali } from "@/lib/bengali";
 import { Timer } from "lucide-react";
 
 interface CountdownTimerProps {
@@ -97,7 +98,7 @@ function TimeBlock({ value, unit }: { value: number; unit: string }) {
   return (
     <div className="flex flex-col items-center">
       <span className="text-3xl sm:text-4xl font-extrabold text-foreground tabular-nums w-16 text-center">
-        {value.toString().padStart(2, "0")}
+        {numberToBengali(value, { padStart: 2 })}
       </span>
       <span className="text-[10px] text-muted-foreground mt-1">{unit}</span>
     </div>

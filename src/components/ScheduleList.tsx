@@ -1,4 +1,6 @@
 import type { DayEntry } from "@/data/siteData";
+import { numberToBengali } from "@/lib/bengali";
+import { formatDate } from "@/lib/date";
 
 interface ScheduleListProps {
   days: DayEntry[];
@@ -30,13 +32,13 @@ const ScheduleList = ({ days, todayRamadan, compact }: ScheduleListProps) => {
             <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
               isToday ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
             }`}>
-              {row.ramadanNumber}
+              {numberToBengali(row.ramadanNumber)}
             </div>
 
             {/* Date & Day */}
             <div className="flex-1 min-w-0">
               <p className={`text-sm font-semibold ${isToday ? "text-primary" : "text-foreground"}`}>
-                {row.date}
+                {formatDate(row.date)}
               </p>
               {!compact && (
                 <p className="text-xs text-muted-foreground">{dayBn[row.day] || row.day}</p>
@@ -47,15 +49,15 @@ const ScheduleList = ({ days, todayRamadan, compact }: ScheduleListProps) => {
             <div className="flex gap-4 sm:gap-6 text-right shrink-0">
               <div>
                 <p className="text-[10px] text-muted-foreground uppercase">সাহরি</p>
-                <p className="text-sm font-semibold text-foreground">{row.sahriEnd}</p>
+                <p className="text-sm font-semibold text-foreground">{numberToBengali(row.sahriEnd)}</p>
               </div>
               <div>
                 <p className="text-[10px] text-muted-foreground uppercase">ফজর</p>
-                <p className="text-sm font-semibold text-primary">{row.fajr}</p>
+                <p className="text-sm font-semibold text-primary">{numberToBengali(row.fajr)}</p>
               </div>
               <div>
                 <p className="text-[10px] text-muted-foreground uppercase">ইফতার</p>
-                <p className="text-sm font-bold text-secondary">{row.iftar}</p>
+                <p className="text-sm font-bold text-secondary">{numberToBengali(row.iftar)}</p>
               </div>
             </div>
           </div>
