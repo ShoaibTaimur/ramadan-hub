@@ -1,25 +1,32 @@
-import { useState, useMemo, useEffect } from "react";
-import { siteConfig, getScheduleForDivision, parseDate, type Division } from "@/data/siteData";
-import DivisionSelector from "@/components/DivisionSelector";
-import TodayCard from "@/components/TodayCard";
-import ScheduleList from "@/components/ScheduleList";
-import IslamicDecoration from "@/components/IslamicDecoration";
 import CountdownTimer from "@/components/CountdownTimer";
-import ReminderButton from "@/components/ReminderButton";
+import DivisionSelector from "@/components/DivisionSelector";
 import InstallPrompt from "@/components/InstallPrompt";
+import IslamicDecoration from "@/components/IslamicDecoration";
+import ReminderButton from "@/components/ReminderButton";
+import ScheduleList from "@/components/ScheduleList";
 import ThemeToggle from "@/components/ThemeToggle";
-import { CalendarDays, Calendar, List } from "lucide-react";
+import TodayCard from "@/components/TodayCard";
+import {
+  getScheduleForDivision,
+  parseDate,
+  siteConfig,
+  type Division,
+} from "@/data/siteData";
+import { numberToBengali } from "@/lib/bengali";
+import { formatDate } from "@/lib/date";
+import { Calendar, CalendarDays, List } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 type View = "today" | "week" | "full";
 
 const Index = () => {
-  const [division, setDivision] = useState<Division>("Dhaka");
+  const [division, setDivision] = useState<Division>("ঢাকা");
   const [view, setView] = useState<View>("today");
   const [animKey, setAnimKey] = useState(0);
 
   const schedule = useMemo(() => getScheduleForDivision(division), [division]);
 
-  const today = new Date();
+  const today = useMemo(() => new Date(), []);
   today.setHours(0, 0, 0, 0);
 
   const todayEntry = useMemo(() => {
@@ -28,11 +35,13 @@ const Index = () => {
       entryDate.setHours(0, 0, 0, 0);
       return entryDate.getTime() === today.getTime();
     });
-  }, [schedule]);
+  }, [schedule, today]);
 
   const weekEntries = useMemo(() => {
     if (!todayEntry) return schedule.slice(0, 7);
-    const idx = schedule.findIndex((d) => d.ramadanNumber === todayEntry.ramadanNumber);
+    const idx = schedule.findIndex(
+      (d) => d.ramadanNumber === todayEntry.ramadanNumber,
+    );
     return schedule.slice(idx, Math.min(idx + 7, schedule.length));
   }, [schedule, todayEntry]);
 
@@ -44,7 +53,10 @@ const Index = () => {
   // Initialize dark mode on mount
   useEffect(() => {
     const theme = localStorage.getItem("theme");
-    if (theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    if (
+      theme === "dark" ||
+      (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
       document.documentElement.classList.add("dark");
     }
   }, []);
@@ -94,14 +106,14 @@ const Index = () => {
           {siteConfig.title}
         </h1>
         <p className="text-muted-foreground text-sm">
-          {siteConfig.subtitle} • {siteConfig.year}
+          {siteConfig.subtitle} • {numberToBengali(siteConfig.year)} হিজরি
         </p>
 
         {/* Ornamental divider */}
         <div className="flex items-center justify-center gap-3 mt-5">
-          <div className="h-px w-20 bg-gradient-to-r from-transparent to-primary/40" />
+          <div className="h-px w-20 bg-linear-to-r from-transparent to-primary/40" />
           <span className="text-secondary/60 text-base">☪</span>
-          <div className="h-px w-20 bg-gradient-to-l from-transparent to-primary/40" />
+          <div className="h-px w-20 bg-linear-to-l from-transparent to-primary/40" />
         </div>
       </header>
 
@@ -117,7 +129,7 @@ const Index = () => {
         </div>
 
         {/* View Tabs */}
-        <div className="flex justify-center gap-1 mb-8 bg-muted/60 backdrop-blur-sm rounded-xl p-1 border border-border">
+        <div className="flex justify-center gap-1 mb-8 bg-muted/60 backdrop-blur-xs rounded-xl p-1 border border-border">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -136,25 +148,33 @@ const Index = () => {
 
         {/* Content with animation */}
         <div key={animKey} className="tab-content-enter">
-          {view === "today" && (
-            todayEntry ? (
+          {view === "today" &&
+            (todayEntry ? (
               <TodayCard {...todayEntry} division={division} />
             ) : (
               <div className="text-center py-16 glass rounded-2xl border border-border">
                 <p className="text-5xl mb-4">🌙</p>
-                <p className="text-foreground font-semibold text-lg mb-2">আজ রমজানের দিন নয়</p>
-                <p className="text-muted-foreground text-sm">সম্পূর্ণ ক্যালেন্ডার দেখতে "সম্পূর্ণ" ট্যাবে যান</p>
-                <p className="text-muted-foreground text-xs mt-4">রমজান শুরু: ১৯ ফেব্রুয়ারি ২০২৬</p>
+                <p className="text-foreground font-semibold text-lg mb-2">
+                  আজ রমজানের দিন নয়
+                </p>
+                <p className="text-muted-foreground text-sm">
+                  সম্পূর্ণ ক্যালেন্ডার দেখতে "সম্পূর্ণ" ট্যাবে যান
+                </p>
+                <p className="text-muted-foreground text-xs mt-4">
+                  রমজান শুরু: {formatDate("19 Feb 2026")}
+                </p>
               </div>
-            )
-          )}
+            ))}
 
           {view === "week" && (
             <div>
               <h3 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-widest">
                 {todayEntry ? "আজ থেকে আগামী ৭ দিন" : "প্রথম সপ্তাহ"}
               </h3>
-              <ScheduleList days={weekEntries} todayRamadan={todayEntry?.ramadanNumber} />
+              <ScheduleList
+                days={weekEntries}
+                todayRamadan={todayEntry?.ramadanNumber}
+              />
             </div>
           )}
 
@@ -163,7 +183,11 @@ const Index = () => {
               <h3 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-widest">
                 সম্পূর্ণ রমজান ক্যালেন্ডার — {division}
               </h3>
-              <ScheduleList days={schedule} todayRamadan={todayEntry?.ramadanNumber} compact />
+              <ScheduleList
+                days={schedule}
+                todayRamadan={todayEntry?.ramadanNumber}
+                compact
+              />
             </div>
           )}
         </div>
@@ -171,12 +195,16 @@ const Index = () => {
         {/* Footer */}
         <footer className="mt-14 text-center space-y-2">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <div className="h-px w-12 bg-gradient-to-r from-transparent to-primary/30" />
+            <div className="h-px w-12 bg-linear-to-r from-transparent to-primary/30" />
             <span className="text-secondary/40 text-xs">✦</span>
-            <div className="h-px w-12 bg-gradient-to-l from-transparent to-primary/30" />
+            <div className="h-px w-12 bg-linear-to-l from-transparent to-primary/30" />
           </div>
-          <p className="text-muted-foreground text-xs">*সকল তারিখ চাঁদ দেখার উপর নির্ভরশীল</p>
-          <p className="text-muted-foreground text-xs">রমজান হাব ২০২৬ 🌙</p>
+          <p className="text-muted-foreground text-xs">
+            *সকল তারিখ চাঁদ দেখার উপর নির্ভরশীল
+          </p>
+          <p className="text-muted-foreground text-xs">
+            রমজান হাব {numberToBengali(2026)} 🌙
+          </p>
           <p className="text-muted-foreground text-xs mt-2">
             Built by{" "}
             <a

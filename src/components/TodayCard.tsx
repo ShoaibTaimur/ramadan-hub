@@ -1,3 +1,5 @@
+import { numberToBengali } from "@/lib/bengali";
+import { formatDate } from "@/lib/date";
 import { Moon, Sun, Clock } from "lucide-react";
 
 interface TodayCardProps {
@@ -22,10 +24,10 @@ const TodayCard = ({ ramadanNumber, date, day, sahriEnd, fajr, iftar, division }
       <div className="text-center mb-6">
         <p className="text-muted-foreground text-sm mb-1">{division} বিভাগ</p>
         <h2 className="text-5xl sm:text-6xl font-extrabold text-gradient mb-2">
-          রমজান {ramadanNumber}
+          রমজান {numberToBengali(ramadanNumber)}
         </h2>
         <p className="text-foreground/70 text-base">
-          {date} — {dayBn[day] || day}
+          {formatDate(date)} — {dayBn[day] || day}
         </p>
       </div>
 
@@ -35,7 +37,7 @@ const TodayCard = ({ ramadanNumber, date, day, sahriEnd, fajr, iftar, division }
         <div className="glass border border-border rounded-2xl p-6 text-center glow-green">
           <Moon className="w-6 h-6 mx-auto mb-2 text-primary" />
           <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">সাহরি শেষ</p>
-          <p className="text-4xl font-bold text-foreground">{sahriEnd}</p>
+          <p className="text-4xl font-bold text-foreground">{numberToBengali(sahriEnd)}</p>
           <p className="text-xs text-muted-foreground mt-1">AM</p>
         </div>
 
@@ -43,7 +45,7 @@ const TodayCard = ({ ramadanNumber, date, day, sahriEnd, fajr, iftar, division }
         <div className="glass border border-border rounded-2xl p-6 text-center">
           <Clock className="w-6 h-6 mx-auto mb-2 text-primary" />
           <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">ফজর</p>
-          <p className="text-4xl font-bold text-primary">{fajr}</p>
+          <p className="text-4xl font-bold text-primary">{numberToBengali(fajr)}</p>
           <p className="text-xs text-muted-foreground mt-1">AM</p>
         </div>
 
@@ -51,7 +53,7 @@ const TodayCard = ({ ramadanNumber, date, day, sahriEnd, fajr, iftar, division }
         <div className="glass border border-border rounded-2xl p-6 text-center glow-gold">
           <Sun className="w-6 h-6 mx-auto mb-2 text-secondary" />
           <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">ইফতার</p>
-          <p className="text-4xl font-bold text-secondary">{iftar}</p>
+          <p className="text-4xl font-bold text-secondary">{numberToBengali(iftar)}</p>
           <p className="text-xs text-muted-foreground mt-1">PM</p>
         </div>
       </div>
