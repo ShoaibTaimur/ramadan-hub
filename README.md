@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://ramadanhub.shoaaib.site/">🔗 Live Website</a>
+  <a href="https://ramadan.shoaaib.site/">🔗 Live Website</a>
 </p>
 
 ---
